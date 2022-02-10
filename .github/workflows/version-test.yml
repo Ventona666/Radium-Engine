@@ -1,0 +1,41 @@
+name: CI
+
+defaults:
+  run:
+    shell: bash
+
+on:
+  push:
+    branches:
+      - master
+      - release-candidate
+env:
+  ext-dir: $GITHUB_WORKSPACE/external/install/
+
+jobs:
+  upgrade-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Read VERSION
+        id: package
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./VERSION
+      - name: Echo VERSION
+        run: echo "${{ steps.package.outputs.content }}"
+      - name: Bump release version
+        id: bump_version
+        uses: christian-draeger/increment-semantic-version@1.0.2
+        with:
+          current-version: "${{ steps.package.outputs.content }}"
+          version-fragment: 'bug'
+      - name: Do something with your bumped release version
+        run: |
+          echo ${{ steps.bump_version.outputs.next-version }}
+          echo ${{ steps.bump_version.outputs.next-version }} > VERSION
+      - uses: EndBug/add-and-commit@v8 # You can change this to use a specific version.
+        with:
+          add: 'VERION'
+          default_author: github_actions
+          message: 'bump version'
