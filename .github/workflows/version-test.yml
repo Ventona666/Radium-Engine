@@ -17,17 +17,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Read VERSION
-        id: package
+        id: read
         uses: juliangruber/read-file-action@v1
         with:
           path: ./VERSION
-      - name: Echo VERSION
-        run: echo "${{ steps.package.outputs.content }}"
+      - name: trim VERSION
+        id: set
+        run: |
+          echo "${{ steps.read.outputs.content }}"
+          echo "::set-output name=version::${{ steps.read.outputs.content }}"
+
       - name: Bump release version
         id: bump_version
         uses: christian-draeger/increment-semantic-version@1.0.2
         with:
-          current-version: "${{ steps.package.outputs.content }}"
+          current-version: "${{ steps.set.outputs.version }}"
           version-fragment: 'bug'
       - name: Do something with your bumped release version
         run: |
