@@ -14,7 +14,6 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 # Note: keep the project name lower case only for easy linux packaging support
 # ~~~
 file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" INPUT_RADIUM_VERSION)
-message("************************************ ${INPUT_RADIUM_VERSION}")
 project(radiumproject VERSION ${INPUT_RADIUM_VERSION})
 
 site_name(VERSION_HOST) # read hostname to VERSION_HOST

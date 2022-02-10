@@ -7,8 +7,7 @@ defaults:
 on:
   push:
     branches:
-      - master
-      - release-candidate
+      - auto-version
 env:
   ext-dir: $GITHUB_WORKSPACE/external/install/
 
