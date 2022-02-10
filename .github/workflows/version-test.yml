@@ -25,7 +25,7 @@ jobs:
         id: set
         run: |
           echo "::set-output name=version::${{ steps.read.outputs.content }}"
-          [[ "${{ github.ref_name }}" == "master" ]] && echo "::set-output name=fragment::feature" || echo "::set-output name=fragment::bug"
+          [[ "${{ github.ref_name }}" == "auto-version" ]] && echo "::set-output name=fragment::feature" || echo "::set-output name=fragment::bug"
       - name: Bump release version
         id: bump_version
         uses: christian-draeger/increment-semantic-version@1.0.2
