@@ -32,13 +32,6 @@ jobs:
         with:
           current-version: "${{ steps.set.outputs.version }}"
           version-fragment: "${{ steps.set.outputs.fragment }}"
-      - name: Bump release version
-        id: bump_version
-        if: ${{ github.ref == 'refs/heads/test-version'  }}
-        uses: christian-draeger/increment-semantic-version@1.0.2
-        with:
-          current-version: "${{ steps.set.outputs.version }}"
-          version-fragment: 'bug'
       - name: Do something with your bumped release version
         run: |
           echo ${{ steps.bump_version.outputs.next-version }} > VERSION
