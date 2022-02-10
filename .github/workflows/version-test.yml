@@ -24,18 +24,23 @@ jobs:
       - name: trim VERSION
         id: set
         run: |
-          echo "${{ steps.read.outputs.content }}"
           echo "::set-output name=version::${{ steps.read.outputs.content }}"
-
       - name: Bump release version
         id: bump_version
+        if: ${{ github.ref == 'refs/heads/master'  }}
+        uses: christian-draeger/increment-semantic-version@1.0.2
+        with:
+          current-version: "${{ steps.set.outputs.version }}"
+          version-fragment: 'bug'
+      - name: Bump release version
+        id: bump_version
+        if: ${{ github.ref == 'refs/heads/test-version'  }}
         uses: christian-draeger/increment-semantic-version@1.0.2
         with:
           current-version: "${{ steps.set.outputs.version }}"
           version-fragment: 'bug'
       - name: Do something with your bumped release version
         run: |
-          echo ${{ steps.bump_version.outputs.next-version }}
           echo ${{ steps.bump_version.outputs.next-version }} > VERSION
       - uses: EndBug/add-and-commit@v8 # You can change this to use a specific version.
         with:
