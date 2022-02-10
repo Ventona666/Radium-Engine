@@ -1,5 +1,4 @@
-name: CI
-
+name: version
 defaults:
   run:
     shell: bash
