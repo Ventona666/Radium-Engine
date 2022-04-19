@@ -28,15 +28,17 @@ inline void GeometryData::setFrame( const Transform& frame ) {
 }
 
 inline std::size_t GeometryData::getVerticesSize() const {
-    return getAttribData<const Vector3Array&>( "vertex" ).size();
+    return m_vertexAttribArray.vertices().size();
 }
 
 inline const Vector3Array& GeometryData::getVertices() const {
-    return getAttribData<const Vector3Array&>( "vertex" );
+    auto& h = m_vertexAttribArray.vertices();
+    return h;
 }
 
 inline Vector3Array& GeometryData::getVertices() {
-    return getAttribDataWithLock<Vector3Array&>( "vertex" );
+    auto& h = m_vertexAttribArray.verticesWithLock();
+    return h;
 }
 
 namespace internal {
@@ -57,98 +59,101 @@ inline void copyData( const InContainer& input, OutContainer& output ) {
 
 template <typename Container>
 inline void GeometryData::setVertices( const Container& vertexList ) {
-    return setAttribData( "vertex", vertexList );
+    m_vertexAttribArray.setVertices( vertexList );
 }
 
 inline Vector2uArray& GeometryData::getEdges() {
-    return m_edge;
+    return getAttribDataWithLock<Vector2uArray&, Vector2ui>( "edge" );
 }
 
 inline const Vector2uArray& GeometryData::getEdges() const {
-    return m_edge;
+    return getAttribData<const Vector2uArray&, Vector2ui>( "edge" );
 }
 
 template <typename Container>
 inline void GeometryData::setEdges( const Container& edgeList ) {
-    internal::copyData( edgeList, m_edge );
+    setAttribData( "edge", edgeList );
 }
 
 inline const VectorNuArray& GeometryData::getFaces() const {
-    return m_faces;
+    return getAttribData<const VectorNuArray&, VectorNui>( "face" );
 }
 
 inline VectorNuArray& GeometryData::getFaces() {
-    return m_faces;
+    return getAttribDataWithLock<VectorNuArray&, VectorNui>( "face" );
 }
 
 template <typename Container>
 inline void GeometryData::setFaces( const Container& faceList ) {
-    internal::copyData( faceList, m_faces );
+    setAttribData( "face", faceList );
 }
 
 inline VectorNuArray& GeometryData::getPolyhedra() {
-    return m_polyhedron;
+    return getAttribDataWithLock<VectorNuArray&, VectorNui>( "polyhedron" );
 }
 
 inline const VectorNuArray& GeometryData::getPolyhedra() const {
-    return m_polyhedron;
+    return getAttribData<const VectorNuArray&, VectorNui>( "polyhedron" );
+    ;
 }
 
 template <typename Container>
 inline void GeometryData::setPolyhedra( const Container& polyList ) {
-    internal::copyData( polyList, m_polyhedron );
+    setAttribData( "polyhedron", polyList );
 }
 
 inline Vector3Array& GeometryData::getNormals() {
-    return getAttribDataWithLock<Vector3Array&>( "normal" );
+    auto& data = m_vertexAttribArray.normalsWithLock();
+    return data;
 }
 
 inline const Vector3Array& GeometryData::getNormals() const {
-    return getAttribData<const Vector3Array&>( "normal" );
+    auto& data = m_vertexAttribArray.normals();
+    return data;
 }
 
 template <typename Container>
 inline void GeometryData::setNormals( const Container& normalList ) {
-    return setAttribData( "normal", normalList );
+    setAttribData( "normal", normalList );
 }
 
 inline Vector3Array& GeometryData::getTangents() {
-    return getAttribDataWithLock<Vector3Array&>( "tangent" );
+    return getAttribDataWithLock<Vector3Array&, Vector3>( "tangent" );
 }
 
 inline const Vector3Array& GeometryData::getTangents() const {
-    return getAttribData<const Vector3Array&>( "tangent" );
+    return getAttribData<const Vector3Array&, Vector3>( "tangent" );
 }
 
 template <typename Container>
 inline void GeometryData::setTangents( const Container& tangentList ) {
-    return setAttribData( "tangent", tangentList );
+    setAttribData( "tangent", tangentList );
 }
 
 inline Vector3Array& GeometryData::getBiTangents() {
-    return getAttribDataWithLock<Vector3Array&>( "biTangent" );
+    return getAttribDataWithLock<Vector3Array&, Vector3>( "biTangent" );
 }
 
 inline const Vector3Array& GeometryData::getBiTangents() const {
-    return getAttribData<const Vector3Array&>( "biTangent" );
+    return getAttribData<const Vector3Array&, Vector3>( "biTangent" );
 }
 
 template <typename Container>
 inline void GeometryData::setBitangents( const Container& bitangentList ) {
-    return setAttribData( "biTangent", bitangentList );
+    setAttribData( "biTangent", bitangentList );
 }
 
 inline Vector3Array& GeometryData::getTexCoords() {
-    return getAttribDataWithLock<Vector3Array&>( "texCoord" );
+    return getAttribDataWithLock<Vector3Array&, Vector3>( "texCoord" );
 }
 
 inline const Vector3Array& GeometryData::getTexCoords() const {
-    return getAttribData<const Vector3Array&>( "texCoord" );
+    return getAttribData<const Vector3Array&, Vector3>( "texCoord" );
 }
 
 template <typename Container>
 inline void GeometryData::setTextureCoordinates( const Container& texCoordList ) {
-    return setAttribData( "texCoord", texCoordList );
+    setAttribData( "texCoord", texCoordList );
 }
 
 inline const MaterialData& GeometryData::getMaterial() const {
@@ -188,23 +193,23 @@ inline bool GeometryData::isHexMesh() const {
 }
 
 inline bool GeometryData::hasVertices() const {
-    return hasAttribData( "vertex" );
+    return getVertices().empty();
 }
 
 inline bool GeometryData::hasEdges() const {
-    return !m_edge.empty();
+    return hasAttribData( "edge" );
 }
 
 inline bool GeometryData::hasFaces() const {
-    return !m_faces.empty();
+    return hasAttribData( "face" );
 }
 
 inline bool GeometryData::hasPolyhedra() const {
-    return !m_polyhedron.empty();
+    return hasAttribData( "polyhedron" );
 }
 
 inline bool GeometryData::hasNormals() const {
-    return hasAttribData( "normal" );
+    return getNormals().empty();
 }
 
 inline bool GeometryData::hasTangents() const {
@@ -231,41 +236,53 @@ Utils::AttribManager& GeometryData::getAttribManager() {
     return m_vertexAttribs;
 }
 
-template <typename Container>
+template <typename Container, typename T>
 inline Container& GeometryData::getAttribDataWithLock( const std::string& name ) {
-    auto h = m_vertexAttribs.findAttrib<Vector3>( name );
-    if ( !m_vertexAttribs.isValid( h ) ) { h = m_vertexAttribs.addAttrib<Vector3>( name ); }
-    auto attribPtr = m_vertexAttribs.getAttribPtr( h );
-    auto& v        = attribPtr->getDataWithLock();
-    return v;
+    auto h = m_vertexAttribArray.template getAttribHandle<T>( name );
+    if ( !m_vertexAttribArray.template isValid( h ) ) {
+        h = m_vertexAttribArray.template addAttrib<T>( name );
+    }
+    auto& attrib = m_vertexAttribArray.template getAttrib( h );
+    auto& d      = attrib.getDataWithLock();
+    return d;
 }
 
-template <typename Container>
+template <typename Container, typename T>
 inline const Container& GeometryData::getAttribData( const std::string& name ) const {
-    auto attriHandler = m_vertexAttribs.findAttrib<Vector3>( name );
-    const auto& v     = m_vertexAttribs.getAttrib( attriHandler ).data();
-    return v;
+    auto& attrib = m_vertexAttribArray.template getAttrib(
+        m_vertexAttribArray.template getAttribHandle<T>( name ) );
+    return attrib.data();
 }
 
 template <typename Container>
 inline void GeometryData::setAttribData( const std::string& name,
                                          const Container& attribDataList ) {
-    auto& attrib = m_vertexAttribs.getAttrib( m_vertexAttribs.findAttrib<Vector3>( name ) );
-    auto& v      = attrib.getDataWithLock();
+    Utils::Attrib<Container>& c = m_vertexAttribArray.getAttribBase( name );
+    auto& v                     = c.getDataWithLock();
     internal::copyData( attribDataList, v );
-    attrib.unlock();
+    attribDataUnlock( name );
 }
+
 bool GeometryData::hasAttribData( const std::string& name ) const {
-    auto h = m_vertexAttribs.findAttrib<Vector3>( name );
-    if ( m_vertexAttribs.isValid( h ) ) { return !m_vertexAttribs.getAttrib( h ).data().empty(); }
+    if ( name == "tangent" || name == "biTangent" || name == "texCoord" ) {
+        return getAttribData<Vector3Array, Vector3>( name ).empty();
+    }
+    else if ( name == "face" || name == "polyhedron" ) {
+        return getAttribData<VectorNuArray, VectorNui>( name ).empty();
+    }
+    else if ( name == "edge" ) {
+        return getAttribData<Vector2Array, Vector2>( name ).empty();
+    }
     return false;
 }
 
 void GeometryData::attribDataUnlock( const std::string& name ) {
-    auto h = m_vertexAttribs.findAttrib<Vector3>( name );
-    if ( m_vertexAttribs.isValid( h ) ) {
-        auto attribPtr = m_vertexAttribs.getAttribPtr( h );
-        if ( attribPtr->isLocked() ) { attribPtr->unlock(); }
+    if ( name == "vertex" ) { m_vertexAttribArray.verticesUnlock(); }
+    else if ( name == "normal" ) {
+        m_vertexAttribArray.normalsUnlock();
+    }
+    else {
+        m_vertexAttribArray.getAttribBase( name )->unlock();
     }
 }
 

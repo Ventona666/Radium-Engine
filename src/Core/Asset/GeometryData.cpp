@@ -10,10 +10,8 @@ GeometryData::GeometryData( const std::string& name, const GeometryType& type ) 
     AssetData( name ),
     m_frame( Transform::Identity() ),
     m_type( type ),
-    m_edge(),
-    m_faces(),
-    m_polyhedron(),
     m_vertexAttribs(),
+    m_vertexAttribArray(),
     m_material() {}
 
 GeometryData::~GeometryData() {}
@@ -52,8 +50,10 @@ void GeometryData::displayInfo() const {
     LOG( logINFO ) << " Name           : " << m_name;
     LOG( logINFO ) << " Type           : " << type;
     LOG( logINFO ) << " Vertex #       : " << getVerticesSize();
-    LOG( logINFO ) << " Edge #         : " << m_edge.size();
-    LOG( logINFO ) << " Face #         : " << m_faces.size();
+    LOG( logINFO ) << " Edge #         : "
+                   << getAttribData<const Vector3Array&, Vector3>( "edge" ).size();
+    LOG( logINFO ) << " Face #         : "
+                   << getAttribData<const Vector3Array&, Vector3>( "face" ).size();
     LOG( logINFO ) << " Normal ?       : " << ( ( !hasAttribData( "normal" ) ) ? "NO" : "YES" );
     LOG( logINFO ) << " Tangent ?      : " << ( ( !hasAttribData( "tangent" ) ) ? "NO" : "YES" );
     LOG( logINFO ) << " Bitangent ?    : " << ( ( !hasAttribData( "biTangent" ) ) ? "NO" : "YES" );

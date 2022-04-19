@@ -12,6 +12,7 @@
 
 #include <Core/Asset/AssetData.hpp>
 #include <Core/Asset/MaterialData.hpp>
+#include <Core/Geometry/TriangleMesh.hpp>
 
 namespace Ra {
 namespace Core {
@@ -262,7 +263,7 @@ class RA_CORE_API GeometryData : public AssetData
      * and return. By using this method, user has read-write access to data, data is lock, when
      * done call attribDataUnlock( std :: std::string name )
      */
-    template <typename Container>
+    template <typename Container, typename T>
     inline Container& getAttribDataWithLock( const std::string& name );
 
     /**
@@ -279,7 +280,7 @@ class RA_CORE_API GeometryData : public AssetData
      * @return Get container base on the given name (const).
      * @warning There is no check on the handle validity (obtained by using name)
      */
-    template <typename Container>
+    template <typename Container, typename T>
     inline const Container& getAttribData( const std::string& name ) const;
 
     /**
@@ -318,6 +319,7 @@ class RA_CORE_API GeometryData : public AssetData
     /// The type of geometry for the object.
     GeometryType m_type;
 
+    /*
     /// The list of lines.
     Vector2uArray m_edge;
 
@@ -325,14 +327,28 @@ class RA_CORE_API GeometryData : public AssetData
     VectorNuArray m_faces;
 
     /// The list of polyhedra
-    VectorNuArray m_polyhedron;
+    VectorNuArray m_polyhedron;*/
 
     /// Named attributes
     /// \todo Move all built-in attributes to m_vertexAttribs
     Utils::AttribManager m_vertexAttribs;
 
+    Core::Geometry::AttribArrayGeometry m_vertexAttribArray;
+
     /// The MaterialData for the object.
     std::shared_ptr<MaterialData> m_material;
+
+    enum vertexComponent {
+        G_VERTEX,
+        G_NORMAL,
+        G_TANGENT,
+        G_BI_TANGENT,
+        G_TEX_COORD,
+        G_FRAME,
+        G_EDGE,
+        G_FACE,
+        G_POLYHEDRON
+    };
 };
 
 } // namespace Asset
