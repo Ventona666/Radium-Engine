@@ -50,10 +50,8 @@ void GeometryData::displayInfo() const {
     LOG( logINFO ) << " Name           : " << m_name;
     LOG( logINFO ) << " Type           : " << type;
     LOG( logINFO ) << " Vertex #       : " << getVerticesSize();
-    LOG( logINFO ) << " Edge #         : "
-                   << getAttribData<const Vector3Array&, Vector3>( "edge" ).size();
-    LOG( logINFO ) << " Face #         : "
-                   << getAttribData<const Vector3Array&, Vector3>( "face" ).size();
+    LOG( logINFO ) << " Edge #         : " << getAttribData<Vector3>( "edge" ).size();
+    LOG( logINFO ) << " Face #         : " << getAttribData<Vector3>( "face" ).size();
     LOG( logINFO ) << " Normal ?       : "
                    << ( ( !hasAttribData<Vector3>( "normal" ) ) ? "NO" : "YES" );
     LOG( logINFO ) << " Tangent ?      : "

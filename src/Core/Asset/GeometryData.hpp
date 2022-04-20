@@ -263,8 +263,8 @@ class RA_CORE_API GeometryData : public AssetData
      * and return. By using this method, user has read-write access to data, data is lock, when
      * done call attribDataUnlock( std :: std::string name )
      */
-    template <typename Container, typename T>
-    inline Container& getAttribDataWithLock( const std::string& name );
+    template <typename T>
+    inline VectorArray<T>& getAttribDataWithLock( const std::string& name );
 
     /**
      *
@@ -280,8 +280,8 @@ class RA_CORE_API GeometryData : public AssetData
      * @return Get container base on the given name (const).
      * @warning There is no check on the handle validity (obtained by using name)
      */
-    template <typename Container, typename T>
-    inline const Container& getAttribData( const std::string& name ) const;
+    template <typename T>
+    inline const VectorArray<T>& getAttribData( const std::string& name ) const;
 
     /**
      *

@@ -63,11 +63,11 @@ inline void GeometryData::setVertices( const Container& vertexList ) {
 }
 
 inline Vector2uArray& GeometryData::getEdges() {
-    return getAttribDataWithLock<Vector2uArray&, Vector2ui>( "edge" );
+    return getAttribDataWithLock<Vector2ui>( "edge" );
 }
 
 inline const Vector2uArray& GeometryData::getEdges() const {
-    return getAttribData<const Vector2uArray&, Vector2ui>( "edge" );
+    return getAttribData<Vector2ui>( "edge" );
 }
 
 template <typename Container>
@@ -76,11 +76,11 @@ inline void GeometryData::setEdges( const Container& edgeList ) {
 }
 
 inline const VectorNuArray& GeometryData::getFaces() const {
-    return getAttribData<const VectorNuArray&, VectorNui>( "face" );
+    return getAttribData<VectorNui>( "face" );
 }
 
 inline VectorNuArray& GeometryData::getFaces() {
-    return getAttribDataWithLock<VectorNuArray&, VectorNui>( "face" );
+    return getAttribDataWithLock<VectorNui>( "face" );
 }
 
 template <typename Container>
@@ -89,11 +89,11 @@ inline void GeometryData::setFaces( const Container& faceList ) {
 }
 
 inline VectorNuArray& GeometryData::getPolyhedra() {
-    return getAttribDataWithLock<VectorNuArray&, VectorNui>( "polyhedron" );
+    return getAttribDataWithLock<VectorNui>( "polyhedron" );
 }
 
 inline const VectorNuArray& GeometryData::getPolyhedra() const {
-    return getAttribData<const VectorNuArray&, VectorNui>( "polyhedron" );
+    return getAttribData<VectorNui>( "polyhedron" );
     ;
 }
 
@@ -118,11 +118,11 @@ inline void GeometryData::setNormals( const Container& normalList ) {
 }
 
 inline Vector3Array& GeometryData::getTangents() {
-    return getAttribDataWithLock<Vector3Array&, Vector3>( "tangent" );
+    return getAttribDataWithLock<Vector3>( "tangent" );
 }
 
 inline const Vector3Array& GeometryData::getTangents() const {
-    return getAttribData<const Vector3Array&, Vector3>( "tangent" );
+    return getAttribData<Vector3>( "tangent" );
 }
 
 template <typename Container>
@@ -131,11 +131,11 @@ inline void GeometryData::setTangents( const Container& tangentList ) {
 }
 
 inline Vector3Array& GeometryData::getBiTangents() {
-    return getAttribDataWithLock<Vector3Array&, Vector3>( "biTangent" );
+    return getAttribDataWithLock<Vector3>( "biTangent" );
 }
 
 inline const Vector3Array& GeometryData::getBiTangents() const {
-    return getAttribData<const Vector3Array&, Vector3>( "biTangent" );
+    return getAttribData<Vector3>( "biTangent" );
 }
 
 template <typename Container>
@@ -144,11 +144,11 @@ inline void GeometryData::setBitangents( const Container& bitangentList ) {
 }
 
 inline Vector3Array& GeometryData::getTexCoords() {
-    return getAttribDataWithLock<Vector3Array&, Vector3>( "texCoord" );
+    return getAttribDataWithLock<Vector3>( "texCoord" );
 }
 
 inline const Vector3Array& GeometryData::getTexCoords() const {
-    return getAttribData<const Vector3Array&, Vector3>( "texCoord" );
+    return getAttribData<Vector3>( "texCoord" );
 }
 
 template <typename Container>
@@ -236,8 +236,8 @@ Utils::AttribManager& GeometryData::getAttribManager() {
     return m_vertexAttribs;
 }
 
-template <typename Container, typename T>
-inline Container& GeometryData::getAttribDataWithLock( const std::string& name ) {
+template <typename T>
+inline VectorArray<T>& GeometryData::getAttribDataWithLock( const std::string& name ) {
     auto h = m_vertexAttribArray.template getAttribHandle<T>( name );
     if ( !m_vertexAttribArray.template isValid( h ) ) {
         h = m_vertexAttribArray.template addAttrib<T>( name );
@@ -247,11 +247,12 @@ inline Container& GeometryData::getAttribDataWithLock( const std::string& name )
     return d;
 }
 
-template <typename Container, typename T>
-inline const Container& GeometryData::getAttribData( const std::string& name ) const {
+template <typename T>
+inline const VectorArray<T>& GeometryData::getAttribData( const std::string& name ) const {
     const auto& attrib = m_vertexAttribArray.template getAttrib(
         m_vertexAttribArray.template getAttribHandle<T>( name ) );
-    return attrib.data();
+    auto& d = attrib.data();
+    return d;
 }
 
 template <typename Container>

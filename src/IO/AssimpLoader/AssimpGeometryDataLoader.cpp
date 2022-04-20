@@ -224,7 +224,7 @@ void AssimpGeometryDataLoader::fetchNormals( const aiMesh& mesh, GeometryData& d
 
 void AssimpGeometryDataLoader::fetchTangents( const aiMesh& mesh, GeometryData& data ) const {
     const int size = mesh.mNumVertices;
-    auto& tangent  = data.getAttribDataWithLock<Core::Vector3Array&, Core::Vector3>( "tangent" );
+    auto& tangent  = data.getAttribDataWithLock<Core::Vector3>( "tangent" );
     tangent.resize( mesh.mNumVertices, Core::Vector3::Zero() );
 #pragma omp parallel for
     for ( int i = 0; i < int( size ); ++i ) {
@@ -235,7 +235,7 @@ void AssimpGeometryDataLoader::fetchTangents( const aiMesh& mesh, GeometryData& 
 
 void AssimpGeometryDataLoader::fetchBitangents( const aiMesh& mesh, GeometryData& data ) const {
     const int size  = mesh.mNumVertices;
-    auto& bitangent = data.getAttribDataWithLock<Core::Vector3Array&, Core::Vector3>( "biTangent" );
+    auto& bitangent = data.getAttribDataWithLock<Core::Vector3>( "biTangent" );
     bitangent.resize( mesh.mNumVertices );
 #pragma omp parallel for
     for ( int i = 0; i < size; ++i ) {
@@ -247,7 +247,7 @@ void AssimpGeometryDataLoader::fetchBitangents( const aiMesh& mesh, GeometryData
 void AssimpGeometryDataLoader::fetchTextureCoordinates( const aiMesh& mesh,
                                                         GeometryData& data ) const {
     const int size = mesh.mNumVertices;
-    auto& texcoord = data.getAttribDataWithLock<Core::Vector3Array&, Core::Vector3>( "texCoord" );
+    auto& texcoord = data.getAttribDataWithLock<Core::Vector3>( "texCoord" );
     texcoord.resize( mesh.mNumVertices );
 #pragma omp parallel for
     for ( int i = 0; i < size; ++i ) {
