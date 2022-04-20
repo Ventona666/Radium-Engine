@@ -114,7 +114,7 @@ inline const Vector3Array& GeometryData::getNormals() const {
 
 template <typename Container>
 inline void GeometryData::setNormals( const Container& normalList ) {
-    setAttribData( "normal", normalList );
+    m_vertexAttribArray.setNormals( normalList );
 }
 
 inline Vector3Array& GeometryData::getTangents() {
@@ -193,7 +193,7 @@ inline bool GeometryData::isHexMesh() const {
 }
 
 inline bool GeometryData::hasVertices() const {
-    return getVertices().empty();
+    return !getVertices().empty();
 }
 
 inline bool GeometryData::hasEdges() const {
@@ -209,7 +209,7 @@ inline bool GeometryData::hasPolyhedra() const {
 }
 
 inline bool GeometryData::hasNormals() const {
-    return getNormals().empty();
+    return !getNormals().empty();
 }
 
 inline bool GeometryData::hasTangents() const {
@@ -249,7 +249,7 @@ inline Container& GeometryData::getAttribDataWithLock( const std::string& name )
 
 template <typename Container, typename T>
 inline const Container& GeometryData::getAttribData( const std::string& name ) const {
-    auto& attrib = m_vertexAttribArray.template getAttrib(
+    const auto& attrib = m_vertexAttribArray.template getAttrib(
         m_vertexAttribArray.template getAttribHandle<T>( name ) );
     return attrib.data();
 }
@@ -265,13 +265,22 @@ inline void GeometryData::setAttribData( const std::string& name,
 
 bool GeometryData::hasAttribData( const std::string& name ) const {
     if ( name == "tangent" || name == "biTangent" || name == "texCoord" ) {
-        return getAttribData<Vector3Array, Vector3>( name ).empty();
+        auto h = m_vertexAttribArray.getAttribHandle<Vector3>( name );
+        if ( m_vertexAttribArray.isValid( h ) ) {
+            return !m_vertexAttribArray.getAttrib( h ).data().empty();
+        }
     }
     else if ( name == "face" || name == "polyhedron" ) {
-        return getAttribData<VectorNuArray, VectorNui>( name ).empty();
+        auto h = m_vertexAttribArray.getAttribHandle<VectorNui>( name );
+        if ( m_vertexAttribArray.isValid( h ) ) {
+            return !m_vertexAttribArray.getAttrib( h ).data().empty();
+        }
     }
     else if ( name == "edge" ) {
-        return getAttribData<Vector2Array, Vector2>( name ).empty();
+        auto h = m_vertexAttribArray.getAttribHandle<Vector2ui>( name );
+        if ( m_vertexAttribArray.isValid( h ) ) {
+            return !m_vertexAttribArray.getAttrib( h ).data().empty();
+        }
     }
     return false;
 }
