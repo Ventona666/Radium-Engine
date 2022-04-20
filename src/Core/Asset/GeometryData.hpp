@@ -301,6 +301,7 @@ class RA_CORE_API GeometryData : public AssetData
      * @return true if the name provided correspond to an existing attribHandle.
      *
      */
+    template <typename T>
     inline bool hasAttribData( const std::string& name ) const;
 
     /// Print stast info to the Debug output.
@@ -318,16 +319,6 @@ class RA_CORE_API GeometryData : public AssetData
 
     /// The type of geometry for the object.
     GeometryType m_type;
-
-    /*
-    /// The list of lines.
-    Vector2uArray m_edge;
-
-    /// The list of faces
-    VectorNuArray m_faces;
-
-    /// The list of polyhedra
-    VectorNuArray m_polyhedron;*/
 
     /// Named attributes
     /// \todo Move all built-in attributes to m_vertexAttribs

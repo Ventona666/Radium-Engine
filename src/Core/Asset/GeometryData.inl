@@ -193,35 +193,35 @@ inline bool GeometryData::isHexMesh() const {
 }
 
 inline bool GeometryData::hasVertices() const {
-    return !getVertices().empty();
+    return hasAttribData<Vector3>( "vertex" );
 }
 
 inline bool GeometryData::hasEdges() const {
-    return hasAttribData( "edge" );
+    return hasAttribData<Vector2ui>( "edge" );
 }
 
 inline bool GeometryData::hasFaces() const {
-    return hasAttribData( "face" );
+    return hasAttribData<VectorNui>( "face" );
 }
 
 inline bool GeometryData::hasPolyhedra() const {
-    return hasAttribData( "polyhedron" );
+    return hasAttribData<Vector2ui>( "polyhedron" );
 }
 
 inline bool GeometryData::hasNormals() const {
-    return !getNormals().empty();
+    return hasAttribData<Vector3>( "normal" );
 }
 
 inline bool GeometryData::hasTangents() const {
-    return hasAttribData( "tangent" );
+    return hasAttribData<Vector3>( "tangent" );
 }
 
 inline bool GeometryData::hasBiTangents() const {
-    return hasAttribData( "biTangent" );
+    return hasAttribData<Vector3>( "biTangent" );
 }
 
 inline bool GeometryData::hasTextureCoordinates() const {
-    return hasAttribData( "texCoord" );
+    return hasAttribData<Vector3>( "texCoord" );
 }
 
 inline bool GeometryData::hasMaterial() const {
@@ -257,29 +257,23 @@ inline const Container& GeometryData::getAttribData( const std::string& name ) c
 template <typename Container>
 inline void GeometryData::setAttribData( const std::string& name,
                                          const Container& attribDataList ) {
-    Utils::Attrib<Container>& c = m_vertexAttribArray.getAttribBase( name );
-    auto& v                     = c.getDataWithLock();
+    Utils::Attrib<Container>& c =
+        m_vertexAttribArray.getAttribBase( name )->template cast<Container>();
+    auto& v = c.getDataWithLock();
     internal::copyData( attribDataList, v );
     attribDataUnlock( name );
 }
 
+template <typename T>
 bool GeometryData::hasAttribData( const std::string& name ) const {
-    if ( name == "tangent" || name == "biTangent" || name == "texCoord" ) {
-        auto h = m_vertexAttribArray.getAttribHandle<Vector3>( name );
-        if ( m_vertexAttribArray.isValid( h ) ) {
-            return !m_vertexAttribArray.getAttrib( h ).data().empty();
-        }
+    if ( name == "vertex" ) { return !m_vertexAttribArray.vertices().empty(); }
+    else if ( name == "normal" ) {
+        return !m_vertexAttribArray.normals().empty();
     }
-    else if ( name == "face" || name == "polyhedron" ) {
-        auto h = m_vertexAttribArray.getAttribHandle<VectorNui>( name );
-        if ( m_vertexAttribArray.isValid( h ) ) {
-            return !m_vertexAttribArray.getAttrib( h ).data().empty();
-        }
-    }
-    else if ( name == "edge" ) {
-        auto h = m_vertexAttribArray.getAttribHandle<Vector2ui>( name );
-        if ( m_vertexAttribArray.isValid( h ) ) {
-            return !m_vertexAttribArray.getAttrib( h ).data().empty();
+    else {
+        auto h = m_vertexAttribArray.template getAttribHandle<T>( name );
+        if ( m_vertexAttribArray.template isValid( h ) ) {
+            return !m_vertexAttribArray.template getAttrib( h ).data().empty();
         }
     }
     return false;

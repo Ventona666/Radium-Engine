@@ -54,10 +54,14 @@ void GeometryData::displayInfo() const {
                    << getAttribData<const Vector3Array&, Vector3>( "edge" ).size();
     LOG( logINFO ) << " Face #         : "
                    << getAttribData<const Vector3Array&, Vector3>( "face" ).size();
-    LOG( logINFO ) << " Normal ?       : " << ( ( !hasAttribData( "normal" ) ) ? "NO" : "YES" );
-    LOG( logINFO ) << " Tangent ?      : " << ( ( !hasAttribData( "tangent" ) ) ? "NO" : "YES" );
-    LOG( logINFO ) << " Bitangent ?    : " << ( ( !hasAttribData( "biTangent" ) ) ? "NO" : "YES" );
-    LOG( logINFO ) << " Tex.Coord. ?   : " << ( ( !hasAttribData( "texCoord" ) ) ? "NO" : "YES" );
+    LOG( logINFO ) << " Normal ?       : "
+                   << ( ( !hasAttribData<Vector3>( "normal" ) ) ? "NO" : "YES" );
+    LOG( logINFO ) << " Tangent ?      : "
+                   << ( ( !hasAttribData<Vector3>( "tangent" ) ) ? "NO" : "YES" );
+    LOG( logINFO ) << " Bitangent ?    : "
+                   << ( ( !hasAttribData<Vector3>( "biTangent" ) ) ? "NO" : "YES" );
+    LOG( logINFO ) << " Tex.Coord. ?   : "
+                   << ( ( !hasAttribData<Vector3>( "texCoord" ) ) ? "NO" : "YES" );
     LOG( logINFO ) << " Material ?     : " << ( ( !hasMaterial() ) ? "NO" : "YES" );
 
     if ( hasMaterial() ) { m_material->displayInfo(); }
