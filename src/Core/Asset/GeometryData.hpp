@@ -256,15 +256,15 @@ class RA_CORE_API GeometryData : public AssetData
 
     /**
      *
-     * @tparam Container
+     * @tparam V
      * @param name
      * @return Get container base on name (lock).
      * @warning If AttribHandle corresponding to name doesn't exist, it's created
      * and return. By using this method, user has read-write access to data, data is lock, when
      * done call attribDataUnlock( std :: std::string name )
      */
-    template <typename T>
-    inline VectorArray<T>& getAttribDataWithLock( const std::string& name );
+    template <typename V>
+    inline VectorArray<V>& getAttribDataWithLock( const std::string& name );
 
     /**
      *
@@ -275,13 +275,13 @@ class RA_CORE_API GeometryData : public AssetData
 
     /**
      *
-     * @tparam Container
+     * @tparam V
      * @param name
      * @return Get container base on the given name (const).
      * @warning There is no check on the handle validity (obtained by using name)
      */
-    template <typename T>
-    inline const VectorArray<T>& getAttribData( const std::string& name ) const;
+    template <typename V>
+    inline const VectorArray<V>& getAttribData( const std::string& name ) const;
 
     /**
      *
@@ -297,11 +297,11 @@ class RA_CORE_API GeometryData : public AssetData
 
     /**
      *
+     * @tparam V
      * @param name
      * @return true if the name provided correspond to an existing attribHandle.
-     *
      */
-    template <typename T>
+    template <typename V>
     inline bool hasAttribData( const std::string& name ) const;
 
     /// Print stast info to the Debug output.

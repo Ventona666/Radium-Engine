@@ -236,21 +236,21 @@ Utils::AttribManager& GeometryData::getAttribManager() {
     return m_vertexAttribs;
 }
 
-template <typename T>
-inline VectorArray<T>& GeometryData::getAttribDataWithLock( const std::string& name ) {
-    auto h = m_vertexAttribArray.template getAttribHandle<T>( name );
+template <typename V>
+inline VectorArray<V>& GeometryData::getAttribDataWithLock( const std::string& name ) {
+    auto h = m_vertexAttribArray.template getAttribHandle<V>( name );
     if ( !m_vertexAttribArray.template isValid( h ) ) {
-        h = m_vertexAttribArray.template addAttrib<T>( name );
+        h = m_vertexAttribArray.template addAttrib<V>( name );
     }
     auto& attrib = m_vertexAttribArray.template getAttrib( h );
     auto& d      = attrib.getDataWithLock();
     return d;
 }
 
-template <typename T>
-inline const VectorArray<T>& GeometryData::getAttribData( const std::string& name ) const {
+template <typename V>
+inline const VectorArray<V>& GeometryData::getAttribData( const std::string& name ) const {
     const auto& attrib = m_vertexAttribArray.template getAttrib(
-        m_vertexAttribArray.template getAttribHandle<T>( name ) );
+        m_vertexAttribArray.template getAttribHandle<V>( name ) );
     auto& d = attrib.data();
     return d;
 }
@@ -265,14 +265,14 @@ inline void GeometryData::setAttribData( const std::string& name,
     attribDataUnlock( name );
 }
 
-template <typename T>
+template <typename V>
 bool GeometryData::hasAttribData( const std::string& name ) const {
     if ( name == "vertex" ) { return !m_vertexAttribArray.vertices().empty(); }
     else if ( name == "normal" ) {
         return !m_vertexAttribArray.normals().empty();
     }
     else {
-        auto h = m_vertexAttribArray.template getAttribHandle<T>( name );
+        auto h = m_vertexAttribArray.template getAttribHandle<V>( name );
         if ( m_vertexAttribArray.template isValid( h ) ) {
             return !m_vertexAttribArray.template getAttrib( h ).data().empty();
         }
