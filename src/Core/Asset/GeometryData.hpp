@@ -73,76 +73,80 @@ class RA_CORE_API GeometryData : public AssetData
     inline std::size_t getVerticesSize() const;
 
     /// Return the list of vertices.
-    [[deprecated( "Use getAttribDataWithLock( std::string name ) instead." )]] inline Vector3Array&
-    getVertices();
+    inline Vector3Array& getVertices();
 
     /// Return the list of vertices.
-    [[deprecated( "Use getAttribData( std::string name ) instead." )]] inline const Vector3Array&
-    getVertices() const;
+    inline const Vector3Array& getVertices() const;
 
     /// Set the mesh vertices.
     /// \note In-place setting with getVertices() is preferred.
     template <typename Container>
-    [[deprecated( "Use setAttribData( std::string name, const Container& attribDataList ) "
-                  "instead." )]] inline void
-    setVertices( const Container& vertexList );
+    inline void setVertices( const Container& vertexList );
 
     /// Return the list of lines.
     /// \note For line meshes only.
-    inline Vector2uArray& getEdges();
+    [[deprecated( "Use getAttribDataWithLock( std::string name ) instead." )]] inline Vector2uArray&
+    getEdges();
 
     /// Return the list of lines.
     /// \note For line meshes only.
-    inline const Vector2uArray& getEdges() const;
+    [[deprecated( "Use getAttribData( std::string name ) instead." )]] inline const Vector2uArray&
+    getEdges() const;
 
     /// Set the list of lines.
     /// \note For line meshes only.
     /// \note In-place setting with getEdges() is preferred.
     template <typename Container>
-    inline void setEdges( const Container& edgeList );
+    [[deprecated( "Use setAttribData( std::string name, const Container& attribDataList ) "
+                  "instead." )]] inline void
+    setEdges( const Container& edgeList );
 
     /// Return the list of faces.
     /// \note For triangle/quadrangle/polygonal meshes only.
-    inline VectorNuArray& getFaces();
+    [[deprecated( "Use getAttribDataWithLock( std::string name ) instead." )]] inline VectorNuArray&
+    getFaces();
 
     /// Return the list of faces.
     /// \note For triangle/quadrangle/polygonal meshes only.
-    inline const VectorNuArray& getFaces() const;
+    [[deprecated( "Use getAttribData( std::string name ) instead." )]] inline const VectorNuArray&
+    getFaces() const;
 
     /// Set the list of faces.
     /// \note For triangle/quadrangle/polygonal meshes only.
     /// \note In-place setting with getFaces() is preferred.
     template <typename Container>
-    inline void setFaces( const Container& faceList );
+    [[deprecated( "Use setAttribData( std::string name, const Container& attribDataList ) "
+                  "instead." )]] inline void
+    setFaces( const Container& faceList );
 
     /// Return the list of polyhedra.
     /// \note For tetrahedron/hexahedron meshes only.
-    inline VectorNuArray& getPolyhedra();
+    [[deprecated( "Use getAttribDataWithLock( std::string name ) instead." )]] inline VectorNuArray&
+    getPolyhedra();
 
     /// Return the list of polyhedra.
     /// \note For tetrahedron/hexahedron meshes only.
-    inline const VectorNuArray& getPolyhedra() const;
+    [[deprecated( "Use getAttribData( std::string name ) instead." )]] inline const VectorNuArray&
+    getPolyhedra() const;
 
     /// Set the list of polyhedra.
     /// \note For tetrahedron/hexahedron meshes only.
     /// \note In-place setting with getPolyhedra() is preferred.
     template <typename Container>
-    inline void setPolyhedra( const Container& polyList );
+    [[deprecated( "Use setAttribData( std::string name, const Container& attribDataList ) "
+                  "instead." )]] inline void
+    setPolyhedra( const Container& polyList );
 
     /// Return the list of vertex normals.
-    [[deprecated( "Use getAttribDataWithLock( std::string name ) instead." )]] inline Vector3Array&
-    getNormals();
+    inline Vector3Array& getNormals();
 
     /// Return the list of vertex normals.
-    [[deprecated( "Use getAttribData( std::string name ) instead." )]] inline const Vector3Array&
-    getNormals() const;
+    inline const Vector3Array& getNormals() const;
 
     /// Set the vertex normals.
     /// \note In-place setting with getNormals() is preferred.
     template <typename Container>
-    [[deprecated( "Use setAttribData( std::string name, const Container& attribDataList ) "
-                  "instead." )]] inline void
-    setNormals( const Container& normalList );
+    inline void setNormals( const Container& normalList );
 
     /// Return the list of vertex tangent vectors.
     [[deprecated( "Use getAttribDataWithLock( std::string name ) instead." )]] inline Vector3Array&
@@ -226,13 +230,14 @@ class RA_CORE_API GeometryData : public AssetData
     hasVertices() const;
 
     /// Return true if the object has lines.
-    inline bool hasEdges() const;
+    [[deprecated( "Use hasAttribData( std::string name ) instead." )]] inline bool hasEdges() const;
 
     /// Return true if the object has faces.
-    inline bool hasFaces() const;
+    [[deprecated( "Use hasAttribData( std::string name ) instead." )]] inline bool hasFaces() const;
 
     /// Return true if the object has polyhedra.
-    inline bool hasPolyhedra() const;
+    [[deprecated( "Use hasAttribData( std::string name ) instead." )]] inline bool
+    hasPolyhedra() const;
 
     /// Return true if the object has vertex normals.
     [[deprecated( "Use hasAttribData( std::string name ) instead." )]] inline bool
@@ -321,25 +326,10 @@ class RA_CORE_API GeometryData : public AssetData
     GeometryType m_type;
 
     /// Named attributes
-    /// \todo Move all built-in attributes to m_vertexAttribs
-    Utils::AttribManager m_vertexAttribs;
-
     Core::Geometry::AttribArrayGeometry m_vertexAttribArray;
 
     /// The MaterialData for the object.
     std::shared_ptr<MaterialData> m_material;
-
-    enum vertexComponent {
-        G_VERTEX,
-        G_NORMAL,
-        G_TANGENT,
-        G_BI_TANGENT,
-        G_TEX_COORD,
-        G_FRAME,
-        G_EDGE,
-        G_FACE,
-        G_POLYHEDRON
-    };
 };
 
 } // namespace Asset

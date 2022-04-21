@@ -229,11 +229,11 @@ inline bool GeometryData::hasMaterial() const {
 }
 
 const Utils::AttribManager& GeometryData::getAttribManager() const {
-    return m_vertexAttribs;
+    return m_vertexAttribArray.vertexAttribs();
 }
 
 Utils::AttribManager& GeometryData::getAttribManager() {
-    return m_vertexAttribs;
+    return m_vertexAttribArray.vertexAttribs();
 }
 
 template <typename V>
@@ -249,9 +249,9 @@ inline VectorArray<V>& GeometryData::getAttribDataWithLock( const std::string& n
 
 template <typename V>
 inline const VectorArray<V>& GeometryData::getAttribData( const std::string& name ) const {
-    const auto& attrib = m_vertexAttribArray.template getAttrib(
-        m_vertexAttribArray.template getAttribHandle<V>( name ) );
-    auto& d = attrib.data();
+    auto h             = m_vertexAttribArray.template getAttribHandle<V>( name );
+    const auto& attrib = m_vertexAttribArray.template getAttrib( h );
+    auto& d            = attrib.data();
     return d;
 }
 

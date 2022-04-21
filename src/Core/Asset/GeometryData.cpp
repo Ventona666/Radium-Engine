@@ -10,7 +10,6 @@ GeometryData::GeometryData( const std::string& name, const GeometryType& type ) 
     AssetData( name ),
     m_frame( Transform::Identity() ),
     m_type( type ),
-    m_vertexAttribs(),
     m_vertexAttribArray(),
     m_material() {}
 
