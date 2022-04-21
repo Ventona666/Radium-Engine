@@ -478,9 +478,14 @@ CoreMeshType createCoreMeshFromGeometryData( const Ra::Core::Asset::GeometryData
             data->getNormals().begin(), data->getNormals().end(), std::back_inserter( normals ) );
     }
 
-    const auto& faces = data->getFaces();
-    indices.reserve( faces.size() );
-    std::copy( faces.begin(), faces.end(), std::back_inserter( indices ) );
+    if ( data->template hasAttribData<Core::VectorNui>( "face" ) ) {
+        const auto& faces = data->getFaces();
+        indices.reserve( faces.size() );
+        std::copy( faces.begin(), faces.end(), std::back_inserter( indices ) );
+    }
+    else {
+        indices.reserve( 0 );
+    }
     mesh.setVertices( std::move( vertices ) );
     mesh.setNormals( std::move( normals ) );
 
